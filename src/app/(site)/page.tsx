@@ -45,9 +45,19 @@ export default async function HomePage() {
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-graphite/80 via-graphite/30 to-graphite/10" />
           <Container className="relative flex h-full flex-col justify-end pb-16 text-white">
-            <p className="fade-in mb-3 inline-flex items-center gap-2 text-sm text-white/85">
-              <MapPin size={16} /> {est.city}{est.state ? `, ${est.state}` : ""}
-            </p>
+            {settings.logoUrl ? (
+              <div className="fade-in mb-6 inline-flex w-fit items-center gap-4 rounded-2xl bg-graphite/85 px-4 py-3 shadow-lg ring-1 ring-white/10 backdrop-blur">
+                <Image src={settings.logoUrl} alt="" width={140} height={100} className="h-16 w-auto object-contain sm:h-20" priority />
+                <div className="pr-2">
+                  <p className="font-display text-2xl font-semibold leading-none sm:text-3xl">{est.name}</p>
+                  <p className="mt-1 inline-flex items-center gap-1 text-xs text-white/80"><MapPin size={12} /> {est.city}{est.state ? `, ${est.state}` : ""}</p>
+                </div>
+              </div>
+            ) : (
+              <p className="fade-in mb-3 inline-flex items-center gap-2 text-sm text-white/85">
+                <MapPin size={16} /> {est.city}{est.state ? `, ${est.state}` : ""}
+              </p>
+            )}
             <h1 className="fade-in max-w-3xl text-4xl font-semibold leading-tight sm:text-6xl">{settings.heroTitle}</h1>
             <p className="fade-in mt-4 max-w-xl text-lg text-white/85">{settings.heroSubtitle}</p>
             <div className="fade-in mt-8 flex flex-wrap gap-3">

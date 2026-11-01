@@ -1,13 +1,15 @@
+import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { InstagramIcon, FacebookIcon } from "./social-icons";
 import type { Establishment } from "@/db/schema";
 
-export function SiteFooter({ est }: { est: Establishment }) {
+export function SiteFooter({ est, logoUrl }: { est: Establishment; logoUrl?: string | null }) {
   return (
     <footer className="mt-24 border-t border-sand-dark/60 bg-sand/60">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-3">
         <div>
+          {logoUrl ? <div className="mb-3 inline-flex rounded-lg bg-graphite px-3 py-2"><Image src={logoUrl} alt={est.name} width={120} height={86} className="h-14 w-auto object-contain" /></div> : null}
           <p className="font-display text-xl font-semibold text-brown-dark">{est.name}</p>
           {est.tagline ? <p className="mt-2 text-sm text-muted">{est.tagline}</p> : null}
           <div className="mt-4 flex gap-3">

@@ -35,12 +35,14 @@ export function SiteHeader({ name, logoUrl }: { name: string; logoUrl: string | 
         scrolled || open ? "bg-cream/95 shadow-sm backdrop-blur" : "bg-cream/80 backdrop-blur"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+      <div className="mx-auto flex h-20 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-3" aria-label={`${name} — página inicial`}>
           {logoUrl ? (
-            <Image src={logoUrl} alt={name} width={56} height={40} className="h-10 w-auto rounded-md object-contain" priority />
+            <span className="flex h-12 items-center rounded-lg bg-graphite px-2 shadow-sm">
+              <Image src={logoUrl} alt={name} width={84} height={60} className="h-10 w-auto object-contain" priority />
+            </span>
           ) : null}
-          <span className="font-display text-lg font-semibold text-brown-dark">{name}</span>
+          <span className="font-display text-xl font-semibold tracking-tight text-brown-dark sm:text-2xl">{name}</span>
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex" aria-label="Principal">

@@ -23,7 +23,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
     <div style={brandVars} className="flex min-h-screen flex-col">
       <SiteHeader name={est.name} logoUrl={settings.logoUrl} />
       <main className="flex-1">{children}</main>
-      <SiteFooter est={est} />
+      <SiteFooter est={est} logoUrl={settings.logoUrl} />
       <WhatsAppButton number={est.whatsapp} message={`Olá! Vim pelo site da ${est.name} e gostaria de informações sobre hospedagem.`} />
     </div>
   );

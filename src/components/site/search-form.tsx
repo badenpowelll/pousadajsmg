@@ -18,7 +18,7 @@ export function SearchForm({
     <form
       action="/reservar"
       method="get"
-      className={`grid gap-3 ${compact ? "sm:grid-cols-[1fr_1fr_auto_auto]" : "rounded-2xl bg-white p-4 shadow-[var(--shadow-soft)] sm:grid-cols-[1fr_1fr_auto_auto] sm:p-5"}`}
+      className={`grid gap-3 ${compact ? "grid-cols-2" : "rounded-2xl bg-white p-4 shadow-[var(--shadow-soft)] sm:grid-cols-[1fr_1fr_auto_auto] sm:p-5"}`}
       aria-label="Buscar disponibilidade"
     >
       {typeSlug ? <input type="hidden" name="tipo" value={typeSlug} /> : null}
@@ -32,13 +32,13 @@ export function SearchForm({
       </label>
       <label className="text-left">
         <span className="label flex items-center gap-1"><Users size={12} /> Hóspedes</span>
-        <select className="field sm:w-32" name="guests" defaultValue={defaults?.guests ?? 2}>
+        <select className={`field ${compact ? "w-full" : "sm:w-32"}`} name="guests" defaultValue={defaults?.guests ?? 2}>
           {Array.from({ length: 8 }, (_, i) => i + 1).map((n) => (
             <option key={n} value={n}>{n} {n === 1 ? "hóspede" : "hóspedes"}</option>
           ))}
         </select>
       </label>
-      <button type="submit" className="btn-primary self-end">
+      <button type="submit" className={`btn-primary self-end ${compact ? "w-full" : ""}`}>
         <Search size={16} /> Buscar
       </button>
     </form>
