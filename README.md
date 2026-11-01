@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pousada J Gostoso — site e sistema de reservas
 
-## Getting Started
+Site público premium + motor de solicitação de reservas + painel administrativo, para um estabelecimento (preparado para evoluir a multi-tenant).
 
-First, run the development server:
+Stack: Next.js 15 (App Router) · React 19 · TypeScript estrito · Tailwind CSS 4 · PostgreSQL · Drizzle ORM · Zod · Vitest.
+
+## Rodar localmente
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env         # edite DATABASE_URL, SESSION_SECRET etc.
+npm install
+npm run db:migrate           # aplica as migrações SQL de ./drizzle
+npm run db:seed              # cria estabelecimento, acomodações de exemplo e admin
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Painel: `http://localhost:3000/admin` — usuário e senha definidos por `SEED_ADMIN_EMAIL` / `SEED_ADMIN_PASSWORD` (padrão `admin@exemplo.com` / `admin12345`). **Troque a senha no primeiro acesso** (Configurações → Minha senha).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Comandos
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Comando | O que faz |
+| --- | --- |
+| `npm run dev` | servidor de desenvolvimento |
+| `npm run build` / `npm start` | build e servidor de produção |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run lint` | ESLint |
+| `npm test` | testes unitários + integração (precisa de `DATABASE_URL` de desenvolvimento) |
+| `npm run db:generate` | gera migração a partir de `src/db/schema.ts` |
+| `npm run db:migrate` | aplica migrações |
+| `npm run db:seed` | dados iniciais (idempotente) |
+| `npm run db:studio` | Drizzle Studio |
 
-## Learn More
+## Variáveis de ambiente
 
-To learn more about Next.js, take a look at the following resources:
+Veja `.env.example`. Obrigatórias: `DATABASE_URL`, `SESSION_SECRET`, `NEXT_PUBLIC_SITE_URL`. Opcionais: `ESTABLISHMENT_TIMEZONE`, `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET` (login do hóspede), `INSTAGRAM_ACCESS_TOKEN` (feed automático).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Documentação
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `docs/ARCHITECTURE.md` — estrutura, fluxo de reserva, modelo de dados
+- `docs/DECISIONS.md` — registro de decisões técnicas
+- `docs/DEPLOY.md` — implantação no Railway
+- `docs/GOOGLE_LOGIN.md` — credenciais do login com Google
+- `docs/INSTAGRAM.md` — feed do Instagram (embed e API)
+- `docs/TESTING.md` — checklist de testes
+- `CLAUDE.md` — convenções para sessões futuras
 
-## Deploy on Vercel
+## O que ainda depende de configuração
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Dados reais da pousada (telefone, WhatsApp, e-mail, endereço, coordenadas): painel → Configurações.
+- Fotos reais: as imagens em `public/demo` são placeholders. Hospede as fotos (ou coloque em `public/`) e cadastre as URLs no painel.
+- Login com Google: credenciais no Google Cloud (ver `docs/GOOGLE_LOGIN.md`).
+- Instagram automático: token da API da Meta (ver `docs/INSTAGRAM.md`).
+- E-mails transacionais (confirmação ao hóspede) e pagamento online: não implementados; ver `docs/ARCHITECTURE.md` → Próximos passos.

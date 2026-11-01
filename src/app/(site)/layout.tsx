@@ -4,6 +4,9 @@ import { SiteFooter } from "@/components/site/footer";
 import { WhatsAppButton } from "@/components/site/whatsapp-button";
 import { getSite } from "@/services/content";
 
+// Conteúdo vem do banco e muda pelo painel: renderizar sob demanda (também evita acesso ao banco no build).
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata(): Promise<Metadata> {
   const { establishment: est, settings } = await getSite();
   return {

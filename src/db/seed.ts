@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 // Seed de desenvolvimento. Dados de contato marcados como "A CONFIRMAR" são fictícios.
 // Fotos são de demonstração (geradas localmente em public/demo) e devem ser substituídas pelas fotos autorizadas da pousada.
 import "dotenv/config";
