@@ -55,7 +55,10 @@ export function assertSearchDatesNotPast(input: SearchInput) {
 }
 
 export type AvailableOffer = {
-  type: typeof accommodationTypes.$inferSelect;
+  type: typeof accommodationTypes.$inferSelect & {
+    images: { id: string; url: string; alt: string }[];
+    amenities: { amenity: { id: string; key: string; label: string; icon: string | null } }[];
+  };
   availableUnits: number;
   quote: ReturnType<typeof quoteStay>;
   meetsMinNights: boolean;

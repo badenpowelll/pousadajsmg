@@ -396,3 +396,14 @@ export type Guest = typeof guests.$inferSelect;
 export type AdminUser = typeof adminUsers.$inferSelect;
 export type Establishment = typeof establishments.$inferSelect;
 export type SiteSettingsRow = typeof siteSettings.$inferSelect;
+
+// ---------- Instagram ----------
+// Posts incorporados manualmente (embed oficial do Instagram) enquanto não há token da API.
+export const instagramPosts = pgTable("instagram_posts", {
+  id: id(),
+  url: text("url").notNull().unique(), // ex.: https://www.instagram.com/p/XXXX/ ou /reel/XXXX/
+  caption: text("caption"),
+  sortOrder: integer("sort_order").notNull().default(0),
+  active: boolean("active").notNull().default(true),
+  createdAt: createdAt(),
+});

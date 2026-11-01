@@ -5,6 +5,7 @@ import { AccommodationCard, Container, SectionHeading } from "@/components/site/
 import { SearchForm } from "@/components/site/search-form";
 import { getSite, listActiveAccommodations, listExperiences, listGallery, listTestimonials } from "@/services/content";
 import { AmenityIcon } from "@/components/site/amenity-icon";
+import { InstagramSection } from "@/components/site/instagram-section";
 
 export default async function HomePage() {
   const [{ establishment: est, settings }, types, gallery, experiences, testimonials] = await Promise.all([
@@ -162,6 +163,8 @@ export default async function HomePage() {
           </Container>
         </section>
       ) : null}
+
+      <InstagramSection profileUrl={est.instagramUrl} />
 
       {/* Localização */}
       <section className="py-20">
