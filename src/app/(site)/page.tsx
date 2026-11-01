@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, MapPin, Star } from "lucide-react";
+import { ArrowRight, Star } from "lucide-react";
 import { AccommodationCard, Container, SectionHeading } from "@/components/site/ui";
 import { SearchForm } from "@/components/site/search-form";
 import { getSite, listActiveAccommodations, listExperiences, listGallery, listTestimonials } from "@/services/content";
@@ -43,25 +43,12 @@ export default async function HomePage() {
           ) : (
             <div className="absolute inset-0 bg-gradient-to-br from-brown to-graphite" />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-graphite/80 via-graphite/30 to-graphite/10" />
-          <Container className="relative flex h-full flex-col justify-end pb-16 text-white">
-            {settings.logoUrl ? (
-              <div className="fade-in mb-6 inline-flex w-fit items-center gap-4 rounded-2xl bg-graphite/85 px-4 py-3 shadow-lg ring-1 ring-white/10 backdrop-blur">
-                <Image src={settings.logoUrl} alt="" width={140} height={100} className="h-16 w-auto object-contain sm:h-20" priority />
-                <div className="pr-2">
-                  <p className="font-display text-2xl font-semibold leading-none sm:text-3xl">{est.name}</p>
-                  <p className="mt-1 inline-flex items-center gap-1 text-xs text-white/80"><MapPin size={12} /> {est.city}{est.state ? `, ${est.state}` : ""}</p>
-                </div>
-              </div>
-            ) : (
-              <p className="fade-in mb-3 inline-flex items-center gap-2 text-sm text-white/85">
-                <MapPin size={16} /> {est.city}{est.state ? `, ${est.state}` : ""}
-              </p>
-            )}
-            <h1 className="fade-in max-w-3xl text-4xl font-semibold leading-tight sm:text-6xl">{settings.heroTitle}</h1>
-            <p className="fade-in mt-4 max-w-xl text-lg text-white/85">{settings.heroSubtitle}</p>
-            <div className="fade-in mt-8 flex flex-wrap gap-3">
-              <Link href="/reservar" className="btn-primary">Reservar agora <ArrowRight size={16} /></Link>
+          <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 15%, rgba(10,8,6,0.85) 100%)" }} />
+          <Container className="relative flex h-full flex-col items-center justify-center pb-10 text-center text-white">
+            <h1 className="fade-in max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">{settings.heroTitle}</h1>
+            <p className="fade-in mt-4 max-w-xl text-sm tracking-[0.25em] text-white/85 uppercase">{settings.heroSubtitle}</p>
+            <div className="fade-in mt-8 flex flex-wrap justify-center gap-3">
+              <Link href="/reservar" className="btn bg-accent font-bold text-graphite hover:bg-gold">Reservar agora <ArrowRight size={16} /></Link>
               <Link href="/acomodacoes" className="btn border border-white/60 text-white hover:bg-white/10">Ver acomodações</Link>
             </div>
           </Container>

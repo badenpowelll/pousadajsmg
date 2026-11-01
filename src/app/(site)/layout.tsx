@@ -21,7 +21,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   const brandVars = { "--color-brand": settings.primaryColor, "--color-accent": settings.accentColor } as React.CSSProperties;
   return (
     <div style={brandVars} className="flex min-h-screen flex-col">
-      <SiteHeader name={est.name} logoUrl={settings.logoUrl} />
+      <SiteHeader name={est.name} logoUrl={settings.logoUrl} tagline={[est.city, est.state].filter(Boolean).join(" · ")} />
       <main className="flex-1">{children}</main>
       <SiteFooter est={est} logoUrl={settings.logoUrl} />
       <WhatsAppButton number={est.whatsapp} message={`Olá! Vim pelo site da ${est.name} e gostaria de informações sobre hospedagem.`} />
