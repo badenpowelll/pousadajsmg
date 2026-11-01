@@ -1,4 +1,4 @@
-# CLAUDE.md — Pousada J Gostoso
+# CLAUDE.md — Pousada J SMG (Pousada J Gostoso)
 
 Site + reservas + painel para um estabelecimento. Next.js 15 App Router, TypeScript estrito, Tailwind 4, PostgreSQL via **Drizzle** (não Prisma: ver docs/DECISIONS.md #1), Zod, Vitest.
 

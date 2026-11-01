@@ -1,4 +1,4 @@
-# Pousada J Gostoso — site e sistema de reservas
+# Pousada J SMG — site e sistema de reservas (Pousada J Gostoso)
 
 Site público premium + motor de solicitação de reservas + painel administrativo, para um estabelecimento (preparado para evoluir a multi-tenant).
 
