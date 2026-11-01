@@ -11,6 +11,8 @@ import { quoteStay } from "@/services/pricing";
 import { ReservationError, assertSearchDatesNotPast, searchSchema } from "@/services/reservations";
 import { db } from "@/db";
 import { ReserveForm } from "./reserve-form";
+import { getGuestAccount, googleConfigured } from "@/lib/guest-auth";
+import { GoogleButton } from "@/components/site/google-button";
 
 export const metadata: Metadata = { title: "Solicitar reserva" };
 
@@ -36,6 +38,8 @@ export default async function ReserveTypePage({ params, searchParams }: Props) {
   const available = blocker ? 0 : await unitsAvailable(db, type, parsed.data.checkIn, parsed.data.checkOut);
   if (!blocker && available <= 0) blocker = "Não há unidades disponíveis para as datas escolhidas.";
   const img = type.images[0];
+  const account = await getGuestAccount();
+  const returnTo = `/reservar/${type.slug}?checkIn=${parsed.data.checkIn}&checkOut=${parsed.data.checkOut}&guests=${parsed.data.guests}`;
 
   return (
     <Container className="py-12">
@@ -43,7 +47,19 @@ export default async function ReserveTypePage({ params, searchParams }: Props) {
       <h1 className="mt-3 text-4xl font-semibold text-brown-dark">Solicitar reserva</h1>
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_400px]">
         <div className="card p-6">
-          {blocker ? <Notice kind="error">{blocker}</Notice> : <ReserveForm accommodationTypeId={type.id} checkIn={parsed.data.checkIn} checkOut={parsed.data.checkOut} guests={parsed.data.guests} />}
+          {blocker ? <Notice kind="error">{blocker}</Notice> : (
+            <>
+              {account ? (
+                <p className="mb-4 rounded-lg bg-sand/60 px-4 py-3 text-sm text-brown-dark">Reservando como <strong>{account.email}</strong>. Seus dados foram preenchidos; confira abaixo.</p>
+              ) : googleConfigured() ? (
+                <div className="mb-5">
+                  <GoogleButton returnTo={returnTo} label="Entrar com Google para preencher automaticamente" />
+                  <p className="mt-2 text-center text-xs text-muted">ou preencha seus dados abaixo</p>
+                </div>
+              ) : null}
+              <ReserveForm accommodationTypeId={type.id} checkIn={parsed.data.checkIn} checkOut={parsed.data.checkOut} guests={parsed.data.guests} prefill={account ? { fullName: account.name, email: account.email, phone: account.whatsapp } : undefined} />
+            </>
+          )}
         </div>
         <aside className="card h-fit">
           {img ? <div className="relative aspect-[16/10]"><Image src={img.url} alt={img.alt} fill sizes="400px" className="object-cover" /></div> : null}

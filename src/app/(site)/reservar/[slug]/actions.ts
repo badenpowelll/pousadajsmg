@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { rateLimit } from "@/lib/rate-limit";
+import { getGuestAccount } from "@/lib/guest-auth";
 import { ReservationError, createReservationRequest, createReservationSchema } from "@/services/reservations";
 
 export type ReserveState = { errors?: Record<string, string>; message?: string };
@@ -11,7 +12,9 @@ export type ReserveState = { errors?: Record<string, string>; message?: string }
 export async function submitReservation(_prev: ReserveState, formData: FormData): Promise<ReserveState> {
   const raw = Object.fromEntries(formData) as Record<string, string>;
   if (raw.website) return { message: "Não foi possível enviar." }; // honeypot
+  const account = await getGuestAccount();
   const parsed = createReservationSchema.safeParse({
+    guestAccountId: account?.id,
     accommodationTypeId: raw.accommodationTypeId,
     checkIn: raw.checkIn,
     checkOut: raw.checkOut,

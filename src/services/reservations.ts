@@ -101,6 +101,7 @@ export const createReservationSchema = z.object({
   guests: z.coerce.number().int().min(1).max(12),
   guest: guestSchema,
   idempotencyKey: z.string().min(8).max(80).optional(),
+  guestAccountId: z.string().optional(),
 });
 
 export type CreateReservationInput = z.infer<typeof createReservationSchema>;
@@ -160,6 +161,7 @@ export async function createReservationRequest(input: CreateReservationInput) {
         idempotencyKey: input.idempotencyKey ?? null,
         accommodationTypeId: type.id,
         guestId: guest.id,
+        guestAccountId: input.guestAccountId ?? null,
         checkIn: search.checkIn,
         checkOut: search.checkOut,
         nights: quote.nights,

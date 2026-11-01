@@ -4,7 +4,8 @@ import { useActionState, useMemo } from "react";
 import { Notice } from "@/components/site/ui";
 import { submitReservation, type ReserveState } from "./actions";
 
-export function ReserveForm(props: { accommodationTypeId: string; checkIn: string; checkOut: string; guests: number }) {
+export function ReserveForm(props: { accommodationTypeId: string; checkIn: string; checkOut: string; guests: number; prefill?: { fullName?: string | null; email?: string | null; phone?: string | null } }) {
+  const pre = props.prefill ?? {};
   const [state, action, pending] = useActionState<ReserveState, FormData>(submitReservation, {});
   // Chave de idempotência gerada uma vez por montagem do formulário: reenvio não duplica a reserva.
   const idempotencyKey = useMemo(() => `web-${crypto.randomUUID()}`, []);
@@ -19,18 +20,18 @@ export function ReserveForm(props: { accommodationTypeId: string; checkIn: strin
       {state.message ? <Notice kind="error">{state.message}</Notice> : null}
       <label>
         <span className="label">Nome completo</span>
-        <input name="fullName" className={`field ${err("fullName") ? "field-error" : ""}`} required autoComplete="name" />
+        <input name="fullName" className={`field ${err("fullName") ? "field-error" : ""}`} defaultValue={pre.fullName ?? ""} required autoComplete="name" />
         {err("fullName") ? <span className="help-error">{err("fullName")}</span> : null}
       </label>
       <div className="grid gap-4 sm:grid-cols-2">
         <label>
           <span className="label">E-mail</span>
-          <input name="email" type="email" className={`field ${err("email") ? "field-error" : ""}`} required autoComplete="email" />
+          <input name="email" type="email" className={`field ${err("email") ? "field-error" : ""}`} defaultValue={pre.email ?? ""} required autoComplete="email" />
           {err("email") ? <span className="help-error">{err("email")}</span> : null}
         </label>
         <label>
           <span className="label">Telefone / WhatsApp</span>
-          <input name="phone" type="tel" className={`field ${err("phone") ? "field-error" : ""}`} required autoComplete="tel" placeholder="(84) 99999-9999" />
+          <input name="phone" type="tel" className={`field ${err("phone") ? "field-error" : ""}`} defaultValue={pre.phone ?? ""} required autoComplete="tel" placeholder="(84) 99999-9999" />
           {err("phone") ? <span className="help-error">{err("phone")}</span> : null}
         </label>
       </div>

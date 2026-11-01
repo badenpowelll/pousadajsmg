@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, UserRound } from "lucide-react";
 
 const links = [
   { href: "/", label: "Início" },
@@ -56,7 +56,8 @@ export function SiteHeader({ name, logoUrl }: { name: string; logoUrl: string | 
               {l.label}
             </Link>
           ))}
-          <Link href="/reservar" className="btn-primary btn-sm ml-2">
+          <Link href="/conta" aria-label="Minha conta" className="rounded-full p-2 text-graphite hover:bg-sand"><UserRound size={18} /></Link>
+          <Link href="/reservar" className="btn-primary btn-sm ml-1">
             Reservar
           </Link>
         </nav>
@@ -87,6 +88,7 @@ export function SiteHeader({ name, logoUrl }: { name: string; logoUrl: string | 
               </li>
             ))}
           </ul>
+          <Link href="/conta" className="mb-2 block rounded-lg px-3 py-3 text-base">Minha conta</Link>
           <Link href="/reservar" className="btn-primary w-full">
             Reservar agora
           </Link>

@@ -15,6 +15,13 @@
       "when": 1793500573233,
       "tag": "0001_instagram",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793501496604,
+      "tag": "0002_guest_accounts",
+      "breakpoints": true
     }
   ]
 }

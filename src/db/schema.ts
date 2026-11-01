@@ -206,6 +206,7 @@ export const reservations = pgTable(
     guestId: text("guest_id")
       .notNull()
       .references(() => guests.id),
+    guestAccountId: text("guest_account_id"), // conta logada (Google) que fez a solicitação, se houver
     checkIn: date("check_in").notNull(),
     checkOut: date("check_out").notNull(),
     nights: integer("nights").notNull(),
@@ -222,6 +223,7 @@ export const reservations = pgTable(
     uniqueIndex("reservations_idempotency_idx").on(t.idempotencyKey),
     index("reservations_type_dates_idx").on(t.accommodationTypeId, t.checkIn, t.checkOut, t.status),
     index("reservations_status_checkin_idx").on(t.status, t.checkIn),
+    index("reservations_account_idx").on(t.guestAccountId),
   ],
 );
 
@@ -407,3 +409,36 @@ export const instagramPosts = pgTable("instagram_posts", {
   active: boolean("active").notNull().default(true),
   createdAt: createdAt(),
 });
+
+// ---------- Contas de hóspedes (login com Google) ----------
+export const guestAccounts = pgTable(
+  "guest_accounts",
+  {
+    id: id(),
+    googleSub: text("google_sub").notNull().unique(), // identificador estável do usuário no Google
+    email: text("email").notNull(),
+    name: text("name"), // preenchido/confirmado pelo hóspede
+    whatsapp: text("whatsapp"), // só dígitos com DDI
+    avatarUrl: text("avatar_url"),
+    profileCompleted: boolean("profile_completed").notNull().default(false),
+    createdAt: createdAt(),
+    updatedAt: updatedAt(),
+  },
+  (t) => [index("guest_accounts_email_idx").on(t.email)],
+);
+
+export const guestSessions = pgTable(
+  "guest_sessions",
+  {
+    id: id(),
+    tokenHash: text("token_hash").notNull().unique(),
+    accountId: text("account_id")
+      .notNull()
+      .references(() => guestAccounts.id, { onDelete: "cascade" }),
+    expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+    createdAt: createdAt(),
+  },
+  (t) => [index("guest_sessions_account_idx").on(t.accountId)],
+);
+
+export type GuestAccount = typeof guestAccounts.$inferSelect;
