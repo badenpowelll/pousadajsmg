@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 // Seed de desenvolvimento. Dados de contato marcados como "A CONFIRMAR" são fictícios.
-// Fotos são de demonstração (Unsplash) e devem ser substituídas pelas fotos autorizadas da pousada.
+// Fotos são de demonstração (geradas localmente em public/demo) e devem ser substituídas pelas fotos autorizadas da pousada.
 import "dotenv/config";
 import bcrypt from "bcryptjs";
 import { drizzle } from "drizzle-orm/postgres-js";
@@ -10,7 +10,7 @@ import * as s from "./schema";
 const sql = postgres(process.env.DATABASE_URL!, { max: 1 });
 const db = drizzle(sql, { schema: s });
 
-const U = (id: string) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1600&q=80`;
+const U = (name: string) => `/demo/${name}.jpg`; // imagens de demonstração locais
 
 async function main() {
   const existing = await db.select({ id: s.establishments.id }).from(s.establishments).limit(1);
@@ -46,7 +46,7 @@ async function main() {
     logoUrl: "/brand/logo.jpg",
     primaryColor: "#C2410C", // laranja da marca
     accentColor: "#D4A017", // dourado da marca
-    heroImageUrl: U("photo-1507525428034-b723cf961d3e"),
+    heroImageUrl: U("hero"),
     heroTitle: "Sol, vento e mar em São Miguel do Gostoso",
     heroSubtitle: "Reserve direto com a pousada e viva dias tranquilos a poucos passos da praia.",
     aboutTitle: "Uma pousada feita para descansar",
@@ -129,12 +129,12 @@ async function main() {
   ]);
 
   await db.insert(s.accommodationImages).values([
-    { accommodationTypeId: t("quarto-standard"), url: U("photo-1631049307264-da0ec9d70304"), alt: "Quarto Standard (foto de demonstração)", sortOrder: 0 },
-    { accommodationTypeId: t("quarto-standard"), url: U("photo-1618773928121-c32242e63f39"), alt: "Detalhe do quarto (foto de demonstração)", sortOrder: 1 },
-    { accommodationTypeId: t("suite-varanda"), url: U("photo-1590490360182-c33d57733427"), alt: "Suíte com Varanda (foto de demonstração)", sortOrder: 0 },
-    { accommodationTypeId: t("suite-varanda"), url: U("photo-1502672260266-1c1ef2d93688"), alt: "Varanda com rede (foto de demonstração)", sortOrder: 1 },
-    { accommodationTypeId: t("suite-familia"), url: U("photo-1566665797739-1674de7a421a"), alt: "Suíte Família (foto de demonstração)", sortOrder: 0 },
-    { accommodationTypeId: t("suite-familia"), url: U("photo-1595576508898-0ad5c879a061"), alt: "Camas da suíte família (foto de demonstração)", sortOrder: 1 },
+    { accommodationTypeId: t("quarto-standard"), url: U("quarto-1"), alt: "Quarto Standard (foto de demonstração)", sortOrder: 0 },
+    { accommodationTypeId: t("quarto-standard"), url: U("quarto-2"), alt: "Detalhe do quarto (foto de demonstração)", sortOrder: 1 },
+    { accommodationTypeId: t("suite-varanda"), url: U("suite-1"), alt: "Suíte com Varanda (foto de demonstração)", sortOrder: 0 },
+    { accommodationTypeId: t("suite-varanda"), url: U("suite-2"), alt: "Varanda com rede (foto de demonstração)", sortOrder: 1 },
+    { accommodationTypeId: t("suite-familia"), url: U("familia-1"), alt: "Suíte Família (foto de demonstração)", sortOrder: 0 },
+    { accommodationTypeId: t("suite-familia"), url: U("familia-2"), alt: "Camas da suíte família (foto de demonstração)", sortOrder: 1 },
   ]);
 
   // Tarifa de alta temporada (exemplo): réveillon com mínimo de 3 noites.
@@ -145,16 +145,16 @@ async function main() {
   ]);
 
   await db.insert(s.galleryImages).values([
-    { url: U("photo-1507525428034-b723cf961d3e"), alt: "Praia ao entardecer (demonstração)", category: "praia", sortOrder: 0 },
-    { url: U("photo-1540541338287-41700207dee6"), alt: "Área da piscina (demonstração)", category: "lazer", sortOrder: 1 },
-    { url: U("photo-1504280390367-361c6d9f38f4"), alt: "Café da manhã regional (demonstração)", category: "gastronomia", sortOrder: 2 },
-    { url: U("photo-1520250497591-112f2f40a3f4"), alt: "Fachada da pousada (demonstração)", category: "estrutura", sortOrder: 3 },
+    { url: U("praia"), alt: "Praia ao entardecer (demonstração)", category: "praia", sortOrder: 0 },
+    { url: U("lazer"), alt: "Área da piscina (demonstração)", category: "lazer", sortOrder: 1 },
+    { url: U("gastronomia"), alt: "Café da manhã regional (demonstração)", category: "gastronomia", sortOrder: 2 },
+    { url: U("estrutura"), alt: "Fachada da pousada (demonstração)", category: "estrutura", sortOrder: 3 },
   ]);
 
   await db.insert(s.experiences).values([
-    { title: "Kitesurf e windsurf", description: "São Miguel do Gostoso é um dos melhores pontos de vento do Brasil. Indicamos escolas e aluguel de equipamentos.", imageUrl: U("photo-1502680390469-be75ac86ab6f"), sortOrder: 1 },
-    { title: "Passeio de buggy", description: "Dunas, lagoas e praias desertas em um dia inteiro de passeio pelo litoral.", imageUrl: U("photo-1469854523086-cc02fe5d8800"), sortOrder: 2 },
-    { title: "Pôr do sol na praia", description: "Fim de tarde na Praia do Cardeiro, a poucos minutos da pousada.", imageUrl: U("photo-1473116763249-2faaef81ccda"), sortOrder: 3 },
+    { title: "Kitesurf e windsurf", description: "São Miguel do Gostoso é um dos melhores pontos de vento do Brasil. Indicamos escolas e aluguel de equipamentos.", imageUrl: U("kite"), sortOrder: 1 },
+    { title: "Passeio de buggy", description: "Dunas, lagoas e praias desertas em um dia inteiro de passeio pelo litoral.", imageUrl: U("buggy"), sortOrder: 2 },
+    { title: "Pôr do sol na praia", description: "Fim de tarde na Praia do Cardeiro, a poucos minutos da pousada.", imageUrl: U("por-do-sol"), sortOrder: 3 },
   ]);
 
   await db.insert(s.testimonials).values([
